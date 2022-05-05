@@ -58,14 +58,14 @@ const Table = ({ data }) => {
   ];
   const loading = [
     {
-      id: "loading data",
+      id: "The Most Recent Page",
     },
   ];
 
   return (
     <ToolkitProvider
       keyField="id"
-      data={!data ? loading : data}
+      data={data.length === 0 ? loading : data}
       columns={columns}
       search={{
         searchFormatted: true,
