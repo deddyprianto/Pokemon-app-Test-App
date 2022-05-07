@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const DropDownPaginations = ({ setCounts, counts }) => {
+const DropDownPaginations = ({ setCount, count }) => {
   const [show, setShow] = useState(false);
   return (
     <div className="relative ml-[10%]">
@@ -48,25 +48,25 @@ const DropDownPaginations = ({ setCounts, counts }) => {
         </div>
       </div>
       {show && (
-        <ul className="visible transition duration-300 opacity-100 bg-white dark:bg-gray-800 shadow rounded mt-2 pb-1 w-48 absolute">
+        <ul className="visible transition duration-300 opacity-100 bg-indigo-50 dark:bg-gray-800 shadow rounded  pb-1 w-48 absolute -top-20">
           <li
             onClick={() => {
-              setCounts(6);
+              setCount(6);
               setShow(!show);
             }}
             className={`cursor-pointer text-gray-600 dark:text-gray-400 text-sm dark:hover:bg-gray-600 dark:hover:text-white leading-3 tracking-normal py-3 hover:bg-gray-100 px-3 font-normal ${
-              counts === 6 && "bg-indigo-700 text-white"
+              count === 6 && "bg-indigo-700 text-white"
             } `}
           >
             6
           </li>
           <li
             onClick={() => {
-              setCounts(12);
+              setCount(12);
               setShow(!show);
             }}
             className={`cursor-pointer text-gray-600 dark:text-gray-400 text-sm dark:hover:bg-gray-600 dark:hover:text-white leading-3 tracking-normal py-3 hover:bg-gray-100 px-3 font-normal ${
-              counts === 12 && "bg-indigo-700 text-white"
+              count === 12 && "bg-indigo-700 text-white"
             } `}
           >
             12

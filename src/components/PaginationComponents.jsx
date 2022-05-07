@@ -1,32 +1,32 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from "react";
+import React from "react";
 import { statevalueProvider } from "../StateProvider";
-import { stateawal } from "../reducer";
+import { defaultState } from "../reducer";
 
 const PaginationComponents = () => {
-  const [{ page: pageIndex, user, prev, next }, dispatch] =
-    statevalueProvider();
-  console.log(prev);
+  const [{ pages: pageIndex, users }, dispatch] = statevalueProvider();
+
   return (
     <div className="flex mr-[10%]">
       <button
         onClick={() => {
-          if (pageIndex === user?.page) {
-            // setPrev(!prev);
-          } else {
-            dispatch({
-              type: stateawal.STATE_PAGEINDEX,
-              payload: pageIndex - 1,
-            });
-            // setNext(false);
-          }
+          dispatch({
+            type: defaultState.STATE_PAGEINDEX,
+            payload: pageIndex - 1,
+          });
         }}
-        disabled={prev}
+        disabled={pageIndex < users?.total_pages ? true : false}
         className={`px-4 py-2 mx-1 text-gray-500 capitalize bg-white rounded-md dark:bg-gray-900 dark:text-gray-600 ${
-          prev && "cursor-not-allowed"
+          pageIndex < users?.total_pages
+            ? "cursor-not-allowed"
+            : "cursor-pointer"
         }`}
       >
-        <div className={`flex items-center -mx-1 ${prev && "opacity-50"}`}>
+        <div
+          className={`flex items-center -mx-1 ${
+            pageIndex < users?.total_pages ? "opacity-50" : "opacity-100"
+          }`}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="w-6 h-6 mx-1"
@@ -44,14 +44,19 @@ const PaginationComponents = () => {
           <span className="mx-1">previous</span>
         </div>
       </button>
-      {[...Array(user?.total_pages).keys()].map((itemCount) => {
+      {[...Array(users?.total_pages).keys()].map((itemCount) => {
         let item = itemCount + 1;
         return (
           <a
-            // onClick={() => setPageIndex(item)}
+            onClick={() =>
+              dispatch({
+                type: defaultState.STATE_PAGEINDEX,
+                payload: item,
+              })
+            }
             key={item}
             className={`cursor-pointer hidden px-4 py-2 mx-1 transition-colors duration-200 transform  rounded-md sm:inline dark:bg-gray-900 dark:text-gray-200 hover:bg-blue-500 dark:hover:bg-blue-500 hover:text-white dark:hover:text-gray-200 ${
-              user?.page === item
+              users?.page === item
                 ? "bg-blue-500 text-white"
                 : "bg-white text-gray-700"
             }`}
@@ -62,21 +67,23 @@ const PaginationComponents = () => {
       })}
       <button
         onClick={() => {
-          if (pageIndex === user?.page) {
-            dispatch({
-              type: stateawal.STATE_PAGEINDEX,
-              payload: pageIndex + 1,
-            });
-          } else {
-            // setNext(true);
-          }
+          dispatch({
+            type: defaultState.STATE_PAGEINDEX,
+            payload: pageIndex + 1,
+          });
         }}
         className={`px-4 py-2 mx-1 text-gray-500 capitalize bg-white rounded-md dark:bg-gray-900 dark:text-gray-600 ${
-          next && "cursor-not-allowed"
+          pageIndex >= users?.total_pages
+            ? "cursor-not-allowed"
+            : "cursor-pointer"
         }`}
-        disabled={next}
+        disabled={pageIndex >= users?.total_pages ? true : false}
       >
-        <div className={`flex items-center -mx-1  ${next && "opacity-50"}`}>
+        <div
+          className={`flex items-center -mx-1  ${
+            pageIndex >= users?.total_pages ? " opacity-50" : "opacity-100"
+          }`}
+        >
           <span className="mx-1">Next</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"

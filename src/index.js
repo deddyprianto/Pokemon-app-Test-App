@@ -9,9 +9,7 @@ import { StateProvider } from "./StateProvider";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <StateProvider reduce={reducer} initial={initialState}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+    <App />
   </StateProvider>
 );
 

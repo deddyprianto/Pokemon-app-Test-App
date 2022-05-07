@@ -9,8 +9,8 @@ import "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.c
 import { statevalueProvider } from "../StateProvider";
 
 const Table = () => {
-  const [{ user }, dispatch] = statevalueProvider();
-  const data = user?.data;
+  const [{ users }, dispatch] = statevalueProvider();
+  const data = users?.data;
   const { SearchBar } = Search;
   const columns = [
     {

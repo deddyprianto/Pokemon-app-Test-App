@@ -4,17 +4,18 @@ import PaginationComponents from "./components/PaginationComponents";
 import Table from "./components/Table";
 import { useUser } from "./useUser";
 import { statevalueProvider } from "./StateProvider";
-import { stateawal } from "./reducer";
+import { defaultState } from "./reducer";
+
 const App = () => {
-  const [{ page }, dispatch] = statevalueProvider();
-  const [count, setCount] = useState(6);
-  const { user, isLoading, isError } = useUser(page, count);
+  const [{ pages }, dispatch] = statevalueProvider();
+  const [counts, setCounts] = useState(6);
+  const { users, isLoading, isError } = useUser(pages, counts);
   useEffect(() => {
     dispatch({
-      type: stateawal.STATE_USER,
-      payload: user,
+      type: defaultState.STATE_USERS,
+      payload: users,
     });
-  }, [user]);
+  }, [users]);
 
   return (
     <div className="bg-indigo-50">
@@ -30,13 +31,13 @@ const App = () => {
         <div className="w-screen h-screen flex flex-col justify-center items-center overflow-y-auto">
           <div
             className={`w-4/5 bg-white rounded-lg shadow-lg ${
-              count === 12 ? "lg:mt-[30%] 2xl:mt-[10%]" : "mt-0"
+              counts === 12 ? "lg:mt-[30%] 2xl:mt-[10%]" : "mt-0"
             }`}
           >
             <Table />
           </div>
           <div className="mt-5 w-full flex justify-between items-center">
-            <DropDownPaginations setCounts={setCount} counts={count} />
+            <DropDownPaginations setCount={setCounts} count={counts} />
             <PaginationComponents />
           </div>
         </div>
