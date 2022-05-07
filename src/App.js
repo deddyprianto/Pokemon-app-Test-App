@@ -1,13 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DropDownPaginations from "./components/DropDownPaginations";
 import PaginationComponents from "./components/PaginationComponents";
 import Table from "./components/Table";
 import { useUser } from "./useUser";
-
+import { statevalueProvider } from "./StateProvider";
+import { stateawal } from "./reducer";
 const App = () => {
-  const [pageIndex, setPageIndex] = useState(1);
+  const [{ page }, dispatch] = statevalueProvider();
   const [count, setCount] = useState(6);
-  const { user, isLoading, isError } = useUser(pageIndex, count);
+  const { user, isLoading, isError } = useUser(page, count);
+  useEffect(() => {
+    dispatch({
+      type: stateawal.STATE_USER,
+      payload: user,
+    });
+  }, [user]);
+
   return (
     <div className="bg-indigo-50">
       {isLoading ? (
@@ -25,15 +33,11 @@ const App = () => {
               count === 12 ? "lg:mt-[30%] 2xl:mt-[10%]" : "mt-0"
             }`}
           >
-            <Table data={user.data} />
+            <Table />
           </div>
           <div className="mt-5 w-full flex justify-between items-center">
             <DropDownPaginations setCounts={setCount} counts={count} />
-            <PaginationComponents
-              user={user}
-              setPageIndex={setPageIndex}
-              pageIndex={pageIndex}
-            />
+            <PaginationComponents />
           </div>
         </div>
       )}

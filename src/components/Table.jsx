@@ -6,8 +6,11 @@ import ToolkitProvider, {
   Search,
 } from "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min";
 import "react-bootstrap-table2-toolkit/dist/react-bootstrap-table2-toolkit.min.css";
+import { statevalueProvider } from "../StateProvider";
 
-const Table = ({ data }) => {
+const Table = () => {
+  const [{ user }, dispatch] = statevalueProvider();
+  const data = user?.data;
   const { SearchBar } = Search;
   const columns = [
     {
@@ -65,7 +68,7 @@ const Table = ({ data }) => {
   return (
     <ToolkitProvider
       keyField="id"
-      data={data.length === 0 ? loading : data}
+      data={!data ? loading : data}
       columns={columns}
       search={{
         searchFormatted: true,

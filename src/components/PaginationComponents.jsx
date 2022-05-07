@@ -1,86 +1,100 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from "react";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/solid";
+import { statevalueProvider } from "../StateProvider";
+import { stateawal } from "../reducer";
 
-export default function PaginationComponents({
-  setPageIndex,
-  pageIndex,
-  user,
-}) {
-  const [prev, setPrev] = useState(false);
-  const [next, setNext] = useState(false);
-
+const PaginationComponents = () => {
+  const [{ page: pageIndex, user, prev, next }, dispatch] =
+    statevalueProvider();
+  console.log(prev);
   return (
-    <div className="bg-indigo-50 flex justify-center sm:px-6">
-      <div className="flex-1 flex justify-between sm:hidden">
-        <button onClick={() => setPageIndex(pageIndex - 1)}>Previous</button>
-        <button onClick={() => setPageIndex(pageIndex + 1)}>Next</button>
-      </div>
-      <div className="flex justify-end items-center w-[90%] ">
-        <div className="">
-          <nav
-            className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
-            aria-label="Pagination"
+    <div className="flex mr-[10%]">
+      <button
+        onClick={() => {
+          if (pageIndex === user?.page) {
+            // setPrev(!prev);
+          } else {
+            dispatch({
+              type: stateawal.STATE_PAGEINDEX,
+              payload: pageIndex - 1,
+            });
+            // setNext(false);
+          }
+        }}
+        disabled={prev}
+        className={`px-4 py-2 mx-1 text-gray-500 capitalize bg-white rounded-md dark:bg-gray-900 dark:text-gray-600 ${
+          prev && "cursor-not-allowed"
+        }`}
+      >
+        <div className={`flex items-center -mx-1 ${prev && "opacity-50"}`}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-6 h-6 mx-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
           >
-            <button
-              onClick={() => {
-                if (pageIndex < user.total_pages) {
-                  setPrev(!prev);
-                } else {
-                  setPageIndex(pageIndex - 1);
-                  setNext(false);
-                }
-              }}
-              className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium hover:bg-gray-50 cursor-pointer"
-              disabled={prev}
-            >
-              <span className="sr-only">Prev</span>
-              <ChevronLeftIcon
-                className={`h-5 w-5 ${
-                  prev ? "text-gray-300" : "text-gray-500"
-                }`}
-                aria-hidden="true"
-              />
-            </button>
-            {[...Array(user.total_pages).keys()].map((itemCount) => {
-              let item = itemCount + 1;
-              return (
-                <a
-                  onClick={() => setPageIndex(item)}
-                  key={item}
-                  className={`bg-white  hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium cursor-pointer ${
-                    user.page === item
-                      ? "border-indigo-500 text-indigo-600"
-                      : "border-gray-300 text-gray-500 "
-                  }`}
-                >
-                  {item}
-                </a>
-              );
-            })}
-            <button
-              onClick={() => {
-                if (pageIndex > user.total_pages) {
-                  setNext(!next);
-                } else {
-                  setPageIndex(pageIndex + 1);
-                  setPrev(false);
-                }
-              }}
-              className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium hover:bg-gray-50 cursor-pointer"
-              disabled={next}
-            >
-              <span className="sr-only">Next</span>
-              <ChevronRightIcon
-                className={`h-5 w-5 ${
-                  next ? "text-gray-300" : "text-gray-500"
-                }`}
-                aria-hidden="true"
-              />
-            </button>
-          </nav>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M7 16l-4-4m0 0l4-4m-4 4h18"
+            />
+          </svg>
+          <span className="mx-1">previous</span>
         </div>
-      </div>
+      </button>
+      {[...Array(user?.total_pages).keys()].map((itemCount) => {
+        let item = itemCount + 1;
+        return (
+          <a
+            // onClick={() => setPageIndex(item)}
+            key={item}
+            className={`cursor-pointer hidden px-4 py-2 mx-1 transition-colors duration-200 transform  rounded-md sm:inline dark:bg-gray-900 dark:text-gray-200 hover:bg-blue-500 dark:hover:bg-blue-500 hover:text-white dark:hover:text-gray-200 ${
+              user?.page === item
+                ? "bg-blue-500 text-white"
+                : "bg-white text-gray-700"
+            }`}
+          >
+            {item}
+          </a>
+        );
+      })}
+      <button
+        onClick={() => {
+          if (pageIndex === user?.page) {
+            dispatch({
+              type: stateawal.STATE_PAGEINDEX,
+              payload: pageIndex + 1,
+            });
+          } else {
+            // setNext(true);
+          }
+        }}
+        className={`px-4 py-2 mx-1 text-gray-500 capitalize bg-white rounded-md dark:bg-gray-900 dark:text-gray-600 ${
+          next && "cursor-not-allowed"
+        }`}
+        disabled={next}
+      >
+        <div className={`flex items-center -mx-1  ${next && "opacity-50"}`}>
+          <span className="mx-1">Next</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-6 h-6 mx-1"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M17 8l4 4m0 0l-4 4m4-4H3"
+            />
+          </svg>
+        </div>
+      </button>
     </div>
   );
-}
+};
+export default PaginationComponents;
