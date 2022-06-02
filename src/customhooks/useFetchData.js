@@ -1,18 +1,26 @@
 import axios from "axios";
 import useSWR from "swr";
 
-export const useFetchData = ({ pages, counts }) => {
+export const useFetchData = ({ paginate }) => {
   const fetcher = (url) => axios.get(url).then((res) => res.data);
-  const { data, error } = useSWR(
-    `https://reqres.in/api/users?page=${pages}&per_page=${counts}`,
-    fetcher,
-    {
-      revalidateOnFocus: false,
-      shouldRetryOnError: false,
-    }
-  );
+  const { data, error } = useSWR(paginate, fetcher, {
+    revalidateOnFocus: false,
+    shouldRetryOnError: false,
+  });
   return {
-    users: data,
+    pokemon: data,
+    isLoading: !error && !data,
+    isError: error,
+  };
+};
+export const useFetchDataDetail = ({ url }) => {
+  const fetcher = (url) => axios.get(url).then((res) => res.data);
+  const { data, error } = useSWR(url, fetcher, {
+    revalidateOnFocus: false,
+    shouldRetryOnError: false,
+  });
+  return {
+    pokemonDetail: data,
     isLoading: !error && !data,
     isError: error,
   };

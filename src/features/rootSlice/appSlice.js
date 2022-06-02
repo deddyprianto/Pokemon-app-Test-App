@@ -1,17 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
-  value: 0,
+  url: {
+    urlDataDetail: "",
+  },
+  myPokemonList: {
+    list: [],
+  },
 };
 export const appSlice = createSlice({
   name: "appSlice",
   initialState,
   reducers: {
-    actionsData: (state, action) => {
-      state.value += action.payload;
+    actionSaveUrlDetail: (state, action) => {
+      state.url = action.payload;
+    },
+    actionAddPokemonToList: (state, action) => {
+      state.myPokemonList = action.payload;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { actionsData } = appSlice.actions;
+export const { actionSaveUrlDetail, actionAddPokemonToList } = appSlice.actions;
 export default appSlice.reducer;
